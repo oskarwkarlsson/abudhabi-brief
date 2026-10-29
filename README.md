@@ -16,12 +16,22 @@ Cadence: Sunday to Friday at 06:30 Europe/Stockholm. Sunday covers Friday and Sa
 | `acc` | X | From the accounts we follow | Notable posts from SOURCES.md handles |
 | `new` | New | New potentials (Sundays) | Verified sources to consider adding |
 
+## Bilingual rule (English and Swedish side by side)
+From 2026-10-29 every brief is bilingual. English sits in the left column (`.en`) and Swedish in the right column (`.sv`, `lang="sv"`), each pair wrapped in a `.bi` grid; `.lab` adds the small EN / SV labels. Below 760px the columns stack, English above Swedish. This applies to the headline and date, each hero card, each section title and description, each bullet, and the notes (gaps) block. Pages use `<body class="bil">` and `style.css?v=2`.
+- The Swedish is a faithful, natural and idiomatic translation of the English: same facts, same caveats and flags (translate the flag text, e.g. "single source" = "en enda källa"), nothing added or dropped.
+- Links are identical in both columns, in the same order.
+- Use official Swedish terms: UD, avrådan, Regeringen, Skatteverket, ISK, uppehållstillstånd. Keep UAE proper names (ADEK, ADREC, Tawtheeq, Golden Visa, Emirates ID) as they are. Swedish dates and times: "torsdag 29 oktober", "kl. 06.30", "14,9 °C", "160 000 AED".
+- Section chips read in Swedish: Säkerhet, Skolor, Boende, Pengar, Regler, Hälsa, Livet, X, Nytt; hero chips read "Safety · Säkerhet".
+- No em-dashes or en-dashes in either language; write "33 till 37".
+- Editions before 2026-10-29 stay English only.
+
 ## Add a brief
-1. Copy `template.html` to `briefs/YYYY-MM-DD.html` and fill `{{DATE}}`, `{{DATE_LONG}}` (add " · Weekend edition" on Sundays) and `{{HEADLINE}}` (optionally wrap one key phrase in `<mark>`).
-2. Hero: 4 story cards (copy the S1 article), with the class taken from the table above.
-3. Fill each `{{..._ITEMS}}` with 1-4 `<li>` bullets. Each bullet is one or two sentences with the source link inline, and says why it matters to the family when that is not obvious. Mark weak items with `<span class="flag">single source</span>`. For an empty section use `<li class="empty">Quiet.</li>`. Items older than the window must carry their date.
+1. Copy `template.html` to `briefs/YYYY-MM-DD.html` and fill `{{DATE}}`, `{{DATE_LONG_EN}}` / `{{DATE_LONG_SV}}` (add " · Weekend edition" / " · Helgutgåva" on Sundays) and `{{HEADLINE_EN}}` / `{{HEADLINE_SV}}` (optionally wrap the same key phrase in `<mark>` in both).
+2. Hero: 4 story cards (copy the S1 article), with the class taken from the table above, and both `_EN` and `_SV` fields filled.
+3. Fill each `{{..._ITEMS}}` with 1-4 `<li class="bi"><div class="en">English</div><div class="sv" lang="sv">Svenska</div></li>` bullets. Each bullet is one or two sentences with the source link inline, and says why it matters to the family when that is not obvious. Mark weak items with `<span class="flag">single source</span>` (Swedish: `en enda källa`) in both columns. For an empty section use `<li class="bi empty"><div class="en">Quiet.</div><div class="sv" lang="sv">Lugnt.</div></li>`. Items older than the window must carry their date.
 4. Safety tone: factual and calm. Say clearly what did *not* happen, for example "no change to the advisory level" or "no attack on UAE territory reported". Always state the current US level and whether the UK FCDO and Swedish UD pages changed.
-5. `{{NOTES}}`: the window, paywalled or failed sources, and unconfirmed items.
+5. `{{NOTES_EN}}` / `{{NOTES_SV}}`: the window, paywalled or failed sources, and unconfirmed items.
 6. In `index.html`, add under `<!-- ARCHIVE: newest first -->`:
-   `<a class="bcard" href="briefs/YYYY-MM-DD.html"><div class="d">DATE_LONG</div><div class="h">HEADLINE</div></a>`
+   `<a class="bcard wide" href="briefs/YYYY-MM-DD.html"><div class="d">DATE_LONG_EN · DATE_LONG_SV</div><div class="h bi lab"><div class="en">HEADLINE_EN</div><div class="sv" lang="sv">HEADLINE_SV</div></div></a>`
+   Only the newest card is `wide`; when adding a new one, remove `wide` from the previous card (it can stay bilingual).
 7. No em-dashes. Never invent facts. Flag single-source or unconfirmed items. Prefer primary sources (ADEK, ADREC, ADRO/ICP, DoH, embassies) over visa or property blogs. Then `git commit`, `git push` to main and check that the page returns 200.
